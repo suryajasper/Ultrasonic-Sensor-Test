@@ -10,6 +10,9 @@
 #include <string>
 
 #include <frc/TimedRobot.h>
+#include <frc/Ultrasonic.h>
+#include <frc/DigitalOutput.h>
+#include <frc/DigitalInput.h>
 #include <frc/smartdashboard/SendableChooser.h>
 
 class Robot : public frc::TimedRobot {
@@ -21,6 +24,11 @@ class Robot : public frc::TimedRobot {
   void TeleopInit() override;
   void TeleopPeriodic() override;
   void TestPeriodic() override;
+
+  const int pingChannelId = 0, echoChannelId = 0;
+  frc::DigitalOutput* pingChannel = new frc::DigitalOutput(pingChannelId);
+  frc::DigitalInput* echoChannel = new frc::DigitalInput(echoChannelId);
+  frc::Ultrasonic* ultrasonicSensor = new frc::Ultrasonic(pingChannel, echoChannel, frc::Ultrasonic::DistanceUnit::kInches);
 
  private:
   frc::SendableChooser<std::string> m_chooser;

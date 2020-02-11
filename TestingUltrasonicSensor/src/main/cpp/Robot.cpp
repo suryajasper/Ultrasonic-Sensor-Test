@@ -7,11 +7,14 @@
 
 #include "Robot.h"
 
-#include <iostream>
-
 #include <frc/smartdashboard/SmartDashboard.h>
 
 void Robot::RobotInit() {
+  ultrasonicSensor->SetEnabled(true);
+  if (!ultrasonicSensor->IsRangeValid()) {
+    frc::SmartDashboard::PutString("Error: Invalid Range specified", "\n");
+  }
+
   m_chooser.SetDefaultOption(kAutoNameDefault, kAutoNameDefault);
   m_chooser.AddOption(kAutoNameCustom, kAutoNameCustom);
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
@@ -61,7 +64,10 @@ void Robot::AutonomousPeriodic() {
 
 void Robot::TeleopInit() {}
 
-void Robot::TeleopPeriodic() {}
+void Robot::TeleopPeriodic() {
+  double distance = ultrasonicSensor->GetRangeInches();
+  frc::SmartDashboard::PutString("Distance: " + std::to_string(distance) + " inches", "\n");
+}
 
 void Robot::TestPeriodic() {}
 
