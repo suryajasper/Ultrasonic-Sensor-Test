@@ -11,8 +11,11 @@
 
 #include <frc/TimedRobot.h>
 #include <frc/smartdashboard/SendableChooser.h>
+#include <frc/PIDController.h>
+#include <frc/PIDOutput.h>
+#include <frc/PIDSource.h>
 
-class Robot : public frc::TimedRobot {
+class Robot : public frc::TimedRobot, public frc::PIDOutput {
  public:
   void RobotInit() override;
   void RobotPeriodic() override;
@@ -21,6 +24,18 @@ class Robot : public frc::TimedRobot {
   void TeleopInit() override;
   void TeleopPeriodic() override;
   void TestPeriodic() override;
+
+  frc::PIDSource* srcIR;
+
+  double kP = 0; // proportional coefficient
+  double kI = 0; // integral coefficient
+  double kD = 0; // derivative coefficient
+  double period = 0.05;
+  
+  double minDistance = 0;
+  double maxDistance = 10;
+
+  frc::PIDController* sensorIR = new frc::PIDController(kP, kI, kD, *srcIR, *this, period);
 
  private:
   frc::SendableChooser<std::string> m_chooser;

@@ -15,6 +15,10 @@ void Robot::RobotInit() {
   m_chooser.SetDefaultOption(kAutoNameDefault, kAutoNameDefault);
   m_chooser.AddOption(kAutoNameCustom, kAutoNameCustom);
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
+  
+  sensorIR->Enable();
+
+  sensorIR->SetInputRange(minDistance, maxDistance);
 }
 
 /**
@@ -61,7 +65,10 @@ void Robot::AutonomousPeriodic() {
 
 void Robot::TeleopInit() {}
 
-void Robot::TeleopPeriodic() {}
+void Robot::TeleopPeriodic() {
+  double distance = sensorIR->Get();
+  frc::SmartDashboard::PutString("distance: ", std::to_string(distance));
+}
 
 void Robot::TestPeriodic() {}
 
